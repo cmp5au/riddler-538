@@ -1,0 +1,118 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{plain} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{538 Riddler: 6 May 2022}
+\author{Colin Parker}
+
+\begin{document}
+\maketitle
+
+\section{Express}
+Let $E_n$ be the expected number of stops from floor $n$ to floor 1, and we will calculate $E_{10}$.
+Assuming a uniform distribution of floor probabilities, we are equally likely to stop at each floor on the way
+down, which will add 1 to our total floor count. This gives the recursion
+
+\begin{align*}
+E_n & = 1 + \sum_{k=1}^{n-1} \frac{E_k}{n-1} \\
+& = 1 + \frac{1}{n-1}\sum_{k=1}^{n-1} E_k; \; E_1 = 0
+\end{align*}
+
+Rearranging gives
+
+\begin{align*}
+(n-1)(E_n - 1) & = \sum_{k=1}^{n-1} E_k \\
+& = E_{n-1} + \sum_{k=1}^{n-2} E_k \\
+& = E_{n-1} + (n-2)(E_{n-1} - 1) \\
+& = (n-1)(E_{n-1} - 1) + 1 \\
+\iff E_n & = E_{n-1} + \frac{1}{n-1} \\
+& = E_{n-2} + \frac{1}{n-2} + \frac{1}{n-1} \\
+& = E_0 + \frac{1}{1} + \frac{1}{2} + \ldots + \frac{1}{n-1} \\
+E_n & = \sum_{k=1}^{n-1}\frac{1}{k}
+\end{align*}
+
+The number we're looking for is $E_{10} = 1 + \frac{1}{2} + \ldots + \frac{1}{9} = \frac{7129}{2520} \approx 2.829$ floors. \\
+\\
+
+In general, the expected number of stopping floors, starting at floor $n$, is called the $(n-1)^{\text{th}}$
+\emph{harmonic number} $H_{n-1}$. The asymptotic expansion allowing for easy approximation is
+
+\begin{align*}
+H_n & \sim \ln n + \gamma + \frac{1}{2n} - \sum_{k=1}^{\infty} \frac{B_{2k}}{2kn^{2k}} \\
+E_n = H_{n-1} & \approx \ln (n-1) + \gamma + \frac{1}{2n - 2}
+\end{align*}
+
+In this expression, $\gamma \approx 0.5772156649$ is the Euler-Mascheroni constant and $B_k$ is the $k^{\text{th}}$ Bernoulli number, which can be used to add more terms to ensure more accurate approximation or faster convergence.
+
+\section{Classic}
+
+After generating lists of all three-digit (and four-, five-, and six-digit primes), I created a graph with connections between
+the primes that formed adjacent rungs of a prime ladder (e.g. between 101 and 181). From there, repeated use of Dijkstra's
+algorithm allowed me to find the shortest path (i.e. optimal prime ladder) between every pair of primes. Sorting these by
+length, the longest chains are:
+
+\begin{align*}
+& \text{1-digit primes: 2 rungs} \\
+& \text{2-digit primes: 4 rungs} \\
+& \text{3-digit primes: 7 rungs} \\
+& \text{4-digit primes: 9 rungs} \\
+& \text{5-digit primes: 11 rungs} \\
+\end{align*}
+
+Unfortunately, there are 68906 6-digit primes, which means there are up to 2.3 billion connections to check and values
+to store. This was too taxing on my RAM, so I couldn't find the answer in this case.
+
+\end{document}
