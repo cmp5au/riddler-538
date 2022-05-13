@@ -1,0 +1,145 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{plain} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%%Optionally increase matrix line spacing
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{538 Riddler: 13 May 2022}
+\author{Colin Parker}
+
+\begin{document}
+\maketitle
+
+\section{Express}
+I first looked at letters used, sounds involved, state name length, and location without finding any kind of pattern.
+At this point I thought of other unique identifiers for the states (postal code, flag, slogan, bird, flower, etc.), of which
+postal code is by far the most commonly known and used. This, combined with Sherlock's clue: ``it's elementary'',
+led me to try matching up state postal codes with symbols for chemical elements:
+
+\begin{align*}
+\text{Alabama = AL } & \text{= Al = Aluminum} \\
+\text{Arkansas = AR } & \text{= Ar = Argon} \\
+\text{California = CA } & \text{= Ca = Calcium} \\
+\text{Colorado = CO } & \text{= Al = Aluminum} \\
+\text{Florida = FL } & \text{= Fl = Flerovium (or perhaps phonetically Fluorine)} \\
+\text{Georgia = GA } & \text{= Ga = Gallium} \\
+\text{Indiana = IN } & \text{= In = Indium} \\
+\text{Louisiana = LA } & \text{= La = Lanthanum} \\
+\text{Maryland = MD } & \text{= Md = Mendelevium} \\
+\text{Minnesota = MN } & \text{= Mn = Manganese} \\
+\text{Missouri = MO } & \text{= Mo = Molybdenum} \\
+\text{Montana = MT } & \text{= Mt = Meitnerium} \\
+\text{Nebraska = NE } & \text{= Ne = Neon} \\
+\text{North Dakota = ND } & \text{= Nd = Neodymium} \\
+\text{Pennsylvania = PA } & \text{= Pa = Protactinium} \\
+\text{South Carolina = SC } & \text{= Sc = Scandium}
+\end{align*}
+
+No other state's postal code is shared with an element's chemical symbol, so more than likely our criminal
+mastermind is a chemist!
+
+\section{Classic}
+
+At any point while I'm playing the game, after rolling, I may have 0, 2, 3, or 4 die in the ``duplicate'' group; having a single
+die is not possible. In addition, the probabilities of reaching a particular state on the next roll are completely determined
+by my current state, not by any previous state or how long I've been playing. This is the Markov property, so we can, after
+many probability calculations, determine the transition matrix and long-run behavior.
+
+Let $a_n, b_n, c_n, d_n$ be the probabilities of getting 0, 1, 3, or 4 duplicates, respectively, after the $n^{\text{th}}$ roll.
+For the first distribution we would typically use $a_0 = 1, \; b_0 = c_0 = d_0 = 0$, but in the subsequent game reaching
+the state with 0 duplicates ends the game. Therefore we want to use the distribution \emph{after} the first roll:
+
+$$\begin{bmatrix}[1.3] a_0 \\ b_0 \\ c_0 \\ d_0 \end{bmatrix} = \begin{bmatrix}[1.3] \frac{3}{32} \\ \frac{9}{16} \\ \frac{3}{16} \\ \frac{5}{32} \end{bmatrix}$$
+
+By considering the possible outcomes for rerolling the duplicate die (which I'll not include for brevity's sake), we can find the
+transition matrix of the Markov chain:
+
+$$\begin{bmatrix}[1.3] a_n \\ b_n \\ c_n \\ d_n \end{bmatrix} = \begin{bmatrix}[1.3] 1 & \frac{1}{8} & \frac{3}{32} & 0 \\ 0 & \frac{3}{4} & \frac{9}{16} & 0 \\ 0 & \frac{1}{2} & \frac{3}{16} & 0 \\ 0 & \frac{1}{8} & \frac{5}{32} & 1 \end{bmatrix}^n \begin{bmatrix}[1.3] \frac{3}{32} \\ \frac{9}{16} \\ \frac{3}{16} \\ \frac{5}{32} \end{bmatrix}$$
+
+In any Markov chain, the long-run behavior will be determined by stationary states (eigenvectors of the transition matrix
+associated with eigenvalues of 1) and cyclic or periodic states (eigenvectors of the transition matrix associated with eigenvalues
+$|\lambda| = 1$). All other eigenvalues have $|\lambda| < 1$, and therefore $\lim_{n \to \infty} \lambda^n = 0$ means that
+they will have no effect in the long run.
+
+This Markov process has two stationary states: having 0 or 4 duplicates means the game is over. Therefore, writing our
+transition matrix eigenvalues as $\lambda_i$ and their associated eigenvectors as $\vec{v_i}$, we have immediately
+that
+
+$$\lambda_1 = \lambda_2 = 1; \; \vec{v_1} = \begin{bmatrix} 1 \\ 0 \\ 0 \\ 0 \end{bmatrix}; \; \vec{v_2} =
+\begin{bmatrix} 0 \\ 0 \\ 0 \\ 1 \end{bmatrix}$$
+
+Then, we can solve for the
+eigenvalues by finding the other two roots of the characteristic polynomial $\operatorname{det} (M - \lambda I) = 0$. Finding their
+associated eigenvectors amounts to solving the equation $M\vec{v_i} = \lambda_i \vec{v_i}$. Lastly, writing
+$\begin{bmatrix} a_0 \\ b_0 \\ c_0 \\ d_0 \end{bmatrix} = \sum_{i=1}^4 c_i \vec{v_i}$, we can solve for the $c_i$
+coefficients by solving a system of 4 equations in 4 variables. This results in
+
+\begin{align*}
+\begin{bmatrix} a_0 \\ b_0 \\ c_0 \\ d_0 \end{bmatrix} & = \frac{3}{7}\vec{v_1} + \frac{4}{7}\vec{v_2} - \frac{57}{136}\vec{v_3} + \frac{15}{3808}\vec{v_4} \\
+\implies \begin{bmatrix} a_n \\ b_n \\ c_n \\ d_n \end{bmatrix} & = \frac{3}{7}\vec{v_1} + \frac{4}{7}\vec{v_2} - \frac{57}{136}\left(\frac{3}{4}\right)^n\vec{v_3} + \frac{15}{3808}\left(\frac{-5}{16}\right)^n\vec{v_4} \\
+\implies \lim_{n \to \infty} \begin{bmatrix}[1.3] a_n \\ b_n \\ c_n \\ d_n \end{bmatrix} & = \begin{bmatrix}[1.3] \frac{3}{7} \\ 0 \\ 0 \\ \frac{4}{7} \end{bmatrix}
+\end{align*}
+
+Therefore the probability of winning (i.e. the probability of eventually having 0 duplicate die, 4 unique die) is $\frac{3}{7}$.
+
+\end{document}
