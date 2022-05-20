@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.4.20)  20 MAY 2022 11:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.1) (preloaded format=pdflatex 2022.4.20)  20 MAY 2022 12:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -567,7 +567,7 @@ Package rerunfilecheck Info: File `2022-05-20-riddler.out' has not changed.
 Here is how much of TeX's memory you used:
  12096 strings out of 480487
  197844 string characters out of 2893668
- 494893 words of memory out of 3000000
+ 495893 words of memory out of 3000000
  29904 multiletter control sequences out of 15000+600000
  476957 words of font info for 57 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
@@ -581,7 +581,7 @@ me/colin/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr17.pfb></home
 lin/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss12.pfb></home/col
 in/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/coli
 n/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on 2022-05-20-riddler.pdf (1 page, 104370 bytes).
+Output written on 2022-05-20-riddler.pdf (1 page, 104622 bytes).
 PDF statistics:
  66 PDF objects out of 1000 (max. 8388607)
  4 named destinations out of 1000 (max. 500000)
